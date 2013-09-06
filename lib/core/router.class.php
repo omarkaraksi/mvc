@@ -10,18 +10,19 @@ class router {
 	public function __construct($request){
   		
 		$this->setRequest($request);
-		 $this->dispatch();
-
+		$this->dispatch();
+		
 
 	}
 	private function dispatch()
-	{
+	{	
+		
 		$request = $this->getRequest();
 
 
 		$getVars= array();
 		$request=explode('/', $request);
-
+		//var_dump($request);
 		foreach ($request as $argument)
 		{
 		    //split GET vars along '=' symbol to separate variable, values
@@ -35,21 +36,53 @@ class router {
 		 $this->setController($getVars[2]) ;
 		 $this->setAction($getVars[3]);
 		 $this->setRoute( $getVars) ;
+		 //$this->init();
+		  //return $this->getRoute();
+		 $target = SERVER_ROOT . '/controllers/' . $this->getController() .'_controller'. '.php' ;
+		
+				//get target
+				if (file_exists($target))
+				{
+				    include_once($target);
 
-		return $this->getRoute();
+				    //modify page to fit naming convention
+				    $class =  $this->getController() . '_controller';
+
+				    //instantiate the appropriate class
+				    if (class_exists($class))
+				    {	$parent =get_parent_class($class);
+
+				    	
+				       $this->init();
+				    }
+				    else
+				    {
+				        //did we name our class correctly?
+				        die('class does not exist!');
+				    }
+				}
+				else
+				{
+				    //can't find the file in 'controllers'! 
+				    die('page does not exist!');
+				}
+;
+		 return $this->getRoute();
 	}
 	private function setAction($action)
-	{
-		$this->_action = $action; 
+	{	
+		$method = ( $action == '') ? 'main' : $action ;
+		$this->_action = $method; 
 	} 
 	
 	public function getAction()
-	{
+	{	 
 		return $this->_action; 
 	} 
 	private function setController($controller)
-	{
-		$this->_controller = $controller; 
+	{	 $cntr = ( $controller == '') ? 'index' : $controller ;
+		
+		$this->_controller = $cntr;
 	} 
 	
 	public function getController()
@@ -62,7 +95,7 @@ class router {
 	}
 
 	private function setRequest($req)
-	{
+	{		
 		$this->_request =$req ;
 	}
 
@@ -75,7 +108,7 @@ class router {
 	{	
 		$route=array();
   		
-  		$route['controller']=$this->getController();
+  		$route['controller']= $this->getController() ;
   		$route['action']=$this->getAction() ;
 		$this->_route =$route ;
 	}
@@ -83,7 +116,7 @@ class router {
 	public function init()
 	{
 		$action = $this->getAction();
-		$controller= $this->getController(). '_controller';
+		$controller= $this->getController(). '_controller' ;
 		//print_r($this);
 		
 		$controller =new $controller($this);
