@@ -1,9 +1,23 @@
 <?php 
 	
+
+	
+
+    
     define('SITE_ROOT','http://locahost');
     define('SERVER_ROOT',$_SERVER['DOCUMENT_ROOT'].'/'.'mvc');
     define('WEB_FOLDER','mvc');
     define('LAYOUT','layout');
+
+
+    //DB Configurtion 
+
+    define('DB_DRIVER' , 'pdo_mysql' ); 
+    define('HOST' , 'locahost'); 
+    define('DATABASE' , 'albums' ); 
+    define('USER' , 'karaksi'); 
+    define('PASS' , '123456'); 
+
 	$request = $_SERVER['REQUEST_URI'];
 
   ;	
@@ -17,7 +31,10 @@
 
 	$router = new router($parsed);
 	// var_dump($router);
-	 
-				
+	
+
+ 
+//autoloading
+
 
 ?>

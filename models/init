@@ -1,0 +1,73 @@
+<?php 
+    define('DB_DRIVER' , 'pdo_mysql' ); 
+    define('HOST' , 'locahost'); 
+    define('DATABASE' , 'albums' ); 
+    define('USER' , 'karaksi'); 
+    define('PASS' , '123456'); 
+
+use Doctrine\ORM\Tools\Setup,
+    Doctrine\ORM\EntityManager,
+    Doctrine\ORM\Configuration,
+    Doctrine\Common\Cache\ArrayCache as Cache,
+    Doctrine\Common\Annotations\AnnotationRegistry,
+    Doctrine\Common\ClassLoader;	
+require_once __DIR__ . '/vendor/autoload.php';
+$loader = new ClassLoader('Entity', __DIR__ . '/library');
+$loader->register();
+$loader = new ClassLoader('EntityProxy', __DIR__ . '/library');
+$loader->register();
+
+
+//configuration
+$config = new Configuration();
+$cache = new Cache();
+$config->setQueryCacheImpl($cache);
+$config->setProxyDir(__DIR__ . '/library/EntityProxy');
+$config->setProxyNamespace('EntityProxy');
+$config->setAutoGenerateProxyClasses(true);
+
+//mapping (example uses annotations, could be any of XML/YAML or plain PHP)
+AnnotationRegistry::registerFile(__DIR__ . '/vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
+$driver = new Doctrine\ORM\Mapping\Driver\AnnotationDriver(
+    new Doctrine\Common\Annotations\AnnotationReader(),
+    array(__DIR__ . '/library/Entity')
+);  
+$config->setMetadataDriverImpl($driver);
+$config->setMetadataCacheImpl($cache);
+ 
+//getting the EntityManager
+$em = EntityManager::create(
+    array(
+        'driver' => DB_DRIVER,
+        'host' => HOST,
+  		'dbname' => DATABASE,
+        'user' => USER,
+        'password' => PASS
+    ),
+    $config
+);
+
+
+
+$em->getConfiguration()->setMetadataDriverImpl($driver);
+$cmf = new \Doctrine\ORM\Tools\DisconnectedClassMetadataFactory();
+$cmf->setEntityManager($em);	// we must set the EntityManager
+
+$classes = $driver->getAllClassNames();
+$metadata = array();
+foreach ($classes as $class) {
+  //any unsupported table/schema could be handled here to exclude some classes
+  if (true) {
+    $metadata[] = $cmf->getMetadataFor($class);
+  }
+}
+
+$generator = new EntityGenerator();
+$generator->setAnnotationPrefix('');   // edit: quick fix for No Metadata Classes to process
+$generator->setUpdateEntityIfExists(true);	// only update if class already exists
+//$generator->setRegenerateEntityIfExists(true);	// this will overwrite the existing classes
+$generator->setGenerateStubMethods(true);
+$generator->setGenerateAnnotations(true);
+$generator->generate($metadata, __DIR__ . '/Entities');
+
+print 'Done!';
