@@ -7,10 +7,12 @@
 		public $_view ;
 		public $_layout ;
 		public $_renderer ;
+		public $db;
 		public function __construct($router)
 		{	//var_dump($router);
 			$this->_router= $router;
-
+			$db= new db();
+			$this->db = $db->em ;
 			$this->setLayout(LAYOUT);
 			$this->_view =$this->_router->getAction();
 			$layout=$this->getLayout(); 

@@ -6,7 +6,8 @@
 
 			 $path =array( 
 			 		SERVER_ROOT.'/'.'controllers',
-			        SERVER_ROOT.'/'.'models', 
+			        SERVER_ROOT.'/'.'models',
+			        SERVER_ROOT.'/'.'models/entities', 
 			        SERVER_ROOT.'/'.'views',
 				    SERVER_ROOT.'/'.'/lib/core'
 				 	
