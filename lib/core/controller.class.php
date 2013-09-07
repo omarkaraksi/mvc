@@ -1,6 +1,5 @@
 <?php
 	
-	use mvc\models ;
 	class controller {
 
 		public $_router ;
@@ -27,7 +26,6 @@
 
 
 		}
-
 
 		public function setLayout($layout)
 		{	

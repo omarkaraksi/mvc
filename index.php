@@ -4,9 +4,10 @@
 	
 
     
-    define('SITE_ROOT','http://locahost');
+    define('SITE_ROOT','http://locaLhost');
     define('SERVER_ROOT',$_SERVER['DOCUMENT_ROOT'].'/'.'mvc');
     define('WEB_FOLDER','mvc');
+    define('PUBLIC_F','/'.WEB_FOLDER.'/public/assets/' );
     define('LAYOUT','layout');
 
 
