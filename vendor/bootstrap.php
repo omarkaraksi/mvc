@@ -8,11 +8,11 @@
     Doctrine\Common\ClassLoader;
  
 
-    define('DB_DRIVER' , 'pdo_mysql' ); 
-    define('HOST' , 'localhost'); 
-    define('DATABASE' , 'albums' ); 
-    define('USER' , 'karaksi'); 
-    define('PASS' , '123456'); 
+    // define('DB_DRIVER' , 'pdo_mysql' ); 
+    // define('HOST' , 'localhost'); 
+    // define('DATABASE' , 'albums' ); 
+    // define('USER' , 'karaksi'); 
+    // define('PASS' , '123456'); 
 require_once __DIR__ . '/autoload.php';
 $loader = new ClassLoader('Entity', __DIR__ . '/library');
 $loader->register();

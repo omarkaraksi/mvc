@@ -10,6 +10,8 @@
 		public $db;
 		public function __construct($router)
 		{	//var_dump($router);
+
+			
 			$this->_router= $router;
 			$db= new db();
 			$this->db = $db->em ;
@@ -17,7 +19,7 @@
 			$this->_view =$this->_router->getAction();
 			$layout=$this->getLayout(); 
 			$view =$this->_view;
-			$renderObj=   new view();
+			$renderObj=   new view_manager();
 			$renderObj->setLayout($this->_layout);
 			$renderObj->setView($view);
 			$renderObj->setViewFolder($this->_router->getController());

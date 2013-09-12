@@ -1,27 +1,23 @@
 <?php 
+
+	
 	class application {
 
 		public function __construct(){
-
-
-			 $path =array( 
-			 		SERVER_ROOT.'/'.'controllers',
-			        SERVER_ROOT.'/'.'models',
-			        SERVER_ROOT.'/'.'models/entities', 
-			        SERVER_ROOT.'/'.'views',
-				    SERVER_ROOT.'/'.'/lib/core'
-				 	
-			    );
-	
+		require('autoload_config.php');
+			// var_dump($AUTOLOAD_CLASS);
 						
-					set_include_path('.;'.implode(';', $path));
+					$path = __DIR__.'/lib/';
+
+					$paths = set_include_path('.;'.implode(';', $AUTOLOAD_CLASS));
 
 					spl_autoload_extensions(".class.php,.php");
+					
+					//$this->autoload_all($paths,$AUTOLOAD_CLASS_RECURSIVE);
 					spl_autoload_register();
-	
+					
 		}
 		
-
 }
 
 ?>
