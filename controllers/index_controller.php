@@ -17,7 +17,7 @@
                         ->getQuery();
         $count= $query->getSingleScalarResult();
 
- 		$this->_renderer->assign('form',$form->render(true));
+ 		$this->_renderer->assign('form',$form);
 
 
  	   

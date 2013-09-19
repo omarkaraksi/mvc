@@ -7,7 +7,47 @@
                         <!-- .inner -->
                         <div class="span12 inner">
                             <!-- content is here -->
-                            <?php $form = $data['form'] ; print($form); ?>
+                            <div id="collapse2" class="body collapse in">
+                            <?php 
+                                 $form =$data['form'];   
+                                
+                              
+                               
+                                
+                                 $form->render();
+
+
+
+                            ?> <?php  $form->renderFormHeader() ; ?>
+                                                 <div class="control-group">
+                                                    <label class="control-label">Required</label>
+
+                                                    <div class="controls"> 
+                                                     <?php  $form->renderElement('test'); ?>
+                                                        <!-- <input type="text" class="validate[required] text-input" name="req" id="req" data-prompt-position="bottomLeft" > -->
+                                                    </div>
+                                                </div>
+                                                  <div class="control-group">
+                                                                        <label class="control-label">Radio</label>
+                                                                        <div class="controls">
+                                                                            <label>
+                                                                            <div class="radio"><span class="checked"> 
+                                                                                    <?php $form->renderElement('t1');?></div>
+                                                                            </label>
+                                                                            <label>
+                                                                            <div class="radio"><span class="checked"> 
+                                                                                    <?php $form->renderElement('t2');?></div>
+                                                                            </label>
+                                                                        </div>
+                                                    </div>                
+                                                <div class="control-group">
+                                                    <label class="control-label"></label>
+
+                                                    <div class="controls">
+                                                      <?php   $form->renderElement('test44'); ?>
+                                                    </div>
+                                                </div> 
+                            </div>
                         </div>
                         <!-- /.inner -->
                     </div>
