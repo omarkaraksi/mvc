@@ -8,7 +8,7 @@
     
 
 
-	$parsed  =  parse_url( $request, PHP_URL_PATH);  //explode('/',$request);
+	$parsed  = $_SERVER['REQUEST_URI'] ;  //explode('/',$request);
 	require_once(SERVER_ROOT .'/'.'lib/core'.'/'.'autoloader.class.php');
 	//new application();
 	
@@ -23,13 +23,18 @@
 
  		autoloader::custom_loader(array( 
 
-					SERVER_ROOT.'/'.'lib/Form/'
+					SERVER_ROOT.'/'.'lib/Form/',
+					SERVER_ROOT.'/'.'/views/',
+					SERVER_ROOT.'/'.'/views/layouts/',
+
 				   
 				    ));
 
 	
 
 	$router = new router($parsed);
+	$runner =new dispatcher($router);
+	$runner->init();
 	
 	// var_dump($router);
 	

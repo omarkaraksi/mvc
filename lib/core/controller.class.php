@@ -22,7 +22,8 @@
 			$renderObj=   new view_manager();
 			$renderObj->setLayout($this->_layout);
 			$renderObj->setView($view);
-			$renderObj->setViewFolder($this->_router->getController());
+			$ViewFolder= explode('_',$this->_router->getController());
+			$renderObj->setViewFolder($ViewFolder[0]);
 			$renderObj->setViewFile($this->_router->getAction());
 			$this->_renderer =$renderObj;
 			//new users_model();

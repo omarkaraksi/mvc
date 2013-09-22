@@ -4,6 +4,7 @@
 
 $AUTOLOAD_CLASS = array(
 					SERVER_ROOT.'/'.'forms',
+					SERVER_ROOT.'/'.'views',
 			 		SERVER_ROOT.'/'.'models',
 			        SERVER_ROOT.'/'.'models/entities', 
 			       	SERVER_ROOT.'/'.'lib/core',

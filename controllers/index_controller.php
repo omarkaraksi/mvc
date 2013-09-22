@@ -4,7 +4,8 @@
  	public function main()
  	{	
 
- 		
+ 		//var_dump($this);
+       // die(ssssssssssssssss);
          $myform = new signup_form();
         // $form = new Form();
          $form =$myform->getForm();

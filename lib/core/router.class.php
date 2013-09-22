@@ -7,69 +7,93 @@ class router {
     private $_controller ;
     private $_route ;
     private $_action ;
-	public function __construct($request){
-  		
-		$this->setRequest($request);
-		$this->dispatch();
+    private $_params ;
+    private $_url ;
+
+ 	public function __construct($request){
+  		$parsed = parse_url( $request, PHP_URL_PATH);
+
+		$this->setRequest($parsed);
+		$this->setUrl($request);
+		$this->route();
 		
 
 	}
-	private function dispatch()
+	private function route()
 	{	
 		
 		$request = $this->getRequest();
 
 
 		$getVars= array();
-		$request=explode('/', $request);
+
+		// 
+		 $url=str_replace( '&', '/', str_replace('?', '/', str_replace('=', '/', $this->getUrl())));
+	
+		$request=rtrim(trim($url,'/') ,'/');
 		//var_dump($request);
+		$request=explode('/', $request);
+		
 		foreach ($request as $argument)
 		{
-		    //split GET vars along '=' symbol to separate variable, values
-		   
 
 		    $getVars[] = $argument;
 		}
-
 		
 
-		 $this->setController($getVars[2]) ;
-		 $this->setAction($getVars[3]);
+		 //str_replace( '&', '/', str_replace('?', '/', str_replace('=', '/', $_GET))) 
+		 $this->setController($getVars[1]) ;
+		 $this->setAction($getVars[2]);
+			
+		 $this->setParams(array_slice($request,3));
+		 			
+		
+		
 		 $this->setRoute( $getVars) ;
+		// var_dump($this->getRoute());
 		 //$this->init();
 		  //return $this->getRoute();
-		 $target = SERVER_ROOT . '/controllers/' . $this->getController() .'_controller'. '.php' ;
+		// $target = SERVER_ROOT . '/controllers/' . $this->getController() .'_controller'. '.php' ;
 		
 				//get target
-				if (file_exists($target))
-				{
-				    include_once($target);
+				// if (file_exists($target))
+				// {
+				//     include_once($target);
 
-				    //modify page to fit naming convention
-				    $class =  $this->getController() . '_controller';
+				//     //modify page to fit naming convention
+				//     $class =  $this->getController() . '_controller';
 
-				    //instantiate the appropriate class
-				    if (class_exists($class))
-				    {	$parent =get_parent_class($class);
+				//     //instantiate the appropriate class
+				//     if (class_exists($class))
+				//     {	$parent =get_parent_class($class);
 
-				    	
-				       $this->init();
-				    }
-				    else
-				    {
-				        //did we name our class correctly?
-				        die('class does not exist!');
-				    }
-				}
-				else
-				{
-				    //can't find the file in 'controllers'! 
-				    die('page does not exist!');
-				}
+				//     	if(method_exists($class, $this->getAction())){
+				// 				$this->init();
+				//     		}
+				//     		else{
+				//     			;
+				//     		}
+				       
+				       
+				//     }
+				//     else
+				//     {
+				//         //did we name our class correctly?
+
+				//         die('class does not exist!');
+				//     }
+				// }
+				// else
+				// {
+				// 	$this->setController('main');
+
+				//     //can't find the file in 'controllers'! 
+				//     die('page does not exist!');
+				// }
 ;
 		 return $this->getRoute();
 	}
-	private function setAction($action)
+	public function setAction($action)
 	{	
 		$method = ( $action == '') ? 'main' : $action ;
 		$this->_action = $method; 
@@ -79,8 +103,11 @@ class router {
 	{	 
 		return $this->_action; 
 	} 
-	private function setController($controller)
-	{	 $cntr = ( $controller == '') ? 'index' : $controller ;
+
+	public function setController($controller)
+	{	
+
+		 $cntr = ( $controller == '') ? 'index' : $controller ;
 		
 		$this->_controller = $cntr;
 	} 
@@ -99,30 +126,66 @@ class router {
 		$this->_request =$req ;
 	}
 
+	public function getUrl()
+	{
+		return $this->_url; 
+	}
+
+	private function setUrl($req)
+	{		
+		$this->_url =$req ;
+	}
+
 	public function getRoute()
 	{
 		return $this->_route; 
 	}
+	public function setParams($params=array()){
 
+		for($i=0;$i<count($params);$i++){
+			
+			$this->_params[$params[$i]]=$params[$i+1] ;
+			if(!$params[$i++]!='' ){
+				break;
+			}
+		}
+		
+	}
+	public function setParam($param,$value){
+		$this->_params[$param]=$value ;
+	}
+
+
+	public function getParams(){
+		return $this->_params;
+	}
+	public function getParam($param){
+		return $this->_params[$param];
+	}
 	private function setRoute($route)
 	{	
 		$route=array();
   		
   		$route['controller']= $this->getController() ;
   		$route['action']=$this->getAction() ;
+  		$route['params']=$this->getParams();
 		$this->_route =$route ;
 	}
 
-	public function init()
-	{
-		$action = $this->getAction();
-		$controller= $this->getController(). '_controller' ;
-		//print_r($this);
-		
-		$controller =new $controller($this);
+	// public function init()
+	// {	
+	// 	$dispatcher = new dispatcher($this->getRoute());
 
-		$controller->$action();
-	}
+	// 	$dispatcher->
+	// 	var_dump($dispatcher->getRoute());
+	// 	$action = $this->getAction();
+	// 	$controller= $this->getController(). '_controller' ;
+	// 	//print_r($this);
+	// 	// print_r($this->getParam('param2'));
+	// 	$controller =new $controller($this);
+
+	// 	$controller->$action();
+	// }
 
 }
 
